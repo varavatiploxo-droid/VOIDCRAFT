@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10100f">
+  <title>COUNTER-STRIKE 2 — Тактика решает</title>
+
+  <style>
+    :root {
+      --bg: #10100f;
+      --panel: #191917;
+      --text: #f4f1e9;
+      --muted: #a5a197;
+      --orange: #e99b35;
+      --orange-light: #ffbd59;
+      --line: rgba(255,255,255,.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--bg);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .header {
+      position: absolute;
+      z-index: 2;
+      top: 0;
+      right: 0;
+      left: 0;
+      border-bottom: 1px solid var(--line);
+      background: rgba(15,15,14,.65);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .12em;
+    }
+
+    .logo-mark {
+      display: grid;
+      width: 39px;
+      height: 39px;
+      place-items: center;
+      border: 1px solid rgba(233,155,53,.55);
+      color: var(--orange-light);
+      font-size: 20px;
+      transform: skew(-8deg);
+    }
+
+    .links {
+      display: flex;
+      gap: 30px;
+      color: #d1cdc4;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .links a:hover { color: var(--orange-light); }
+
+    .steam-small {
+      padding: 11px 15px;
+      border: 1px solid var(--line);
+      color: white;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 720px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgba(12,12,11,.97) 0%, rgba(12,12,11,.82) 43%, rgba(12,12,11,.2) 100%),
+        linear-gradient(0deg, #10100f 0%, transparent 35%),
+        url("https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=2000&q=85")
+        center 38% / cover;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, transparent 48%, rgba(233,155,53,.08) 48.2%, transparent 71%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 690px;
+      padding-top: 70px;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--orange-light);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 30px;
+      height: 2px;
+      background: var(--orange);
+    }
+
+    h1 {
+      margin: 21px 0 15px;
+      font-size: clamp(54px, 10vw, 112px);
+      line-height: .86;
+      letter-spacing: -.075em;
+      text-transform: uppercase;
+    }
+
+    h1 span {
+      display: block;
+      color: var(--orange);
+    }
+
+    .hero-copy {
+      max-width: 475px;
+      color: #c0bcb3;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 29px;
+    }
+
+    .button {
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 11px;
+      padding: 0 21px;
+      border: 1px solid transparent;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      transition: .2s ease;
+    }
+
+    .button-primary {
+      color: #17130d;
+      background: var(--orange);
+    }
+
+    .button-primary:hover {
+      background: var(--orange-light);
+      transform: translateY(-2px);
+    }
+
+    .button-outline {
+      border-color: rgba(255,255,255,.28);
+      background: rgba(15,15,14,.36);
+    }
+
+    .button-outline:hover {
+      border-color: var(--orange);
+      color: var(--orange-light);
+    }
+
+    .hero-note {
+      margin-top: 14px;
+      color: #938f86;
+      font-size: 11px;
+    }
+
+    .hero-note a {
+      color: var(--orange-light);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .hero-bottom {
+      position: absolute;
+      right: 0;
+      bottom: 34px;
+      left: 0;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      color: #aaa69d;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .hero-bottom strong { color: var(--orange-light); }
+
+    .section { padding: 88px 0; }
+
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .section-kicker {
+      color: var(--orange);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 10px 0 0;
+      font-size: clamp(32px, 5vw, 53px);
+      line-height: 1;
+      letter-spacing: -.055em;
+      text-transform: uppercase;
+    }
+
+    .section-heading p {
+      max-width: 360px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .feature {
+      min-height: 205px;
+      padding: 23px;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, #1c1c19, #151513);
+    }
+
+    .feature-number {
+      color: var(--orange);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .15em;
+    }
+
+    .feature h3 {
+      margin: 35px 0 9px;
+      font-size: 19px;
+      letter-spacing: -.03em;
+      text-transform: uppercase;
+    }
+
+    .feature p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .cta {
+      position: relative;
+      overflow: hidden;
+      padding: 48px;
+      border: 1px solid rgba(233,155,53,.35);
+      background:
+        linear-gradient(100deg, rgba(18,18,16,.98), rgba(35,27,17,.94)),
+        var(--panel);
+    }
+
+    .cta::after {
+      content: "CS2";
+      position: absolute;
+      right: 24px;
+      bottom: -45px;
+      color: rgba(233,155,53,.08);
+      font-size: 190px;
+      font-weight: 1000;
+      letter-spacing: -.1em;
+      pointer-events: none;
+    }
+
+    .cta-inner { position: relative; z-index: 1; }
+
+    .cta h2 { max-width: 650px; }
+
+    .cta p {
+      max-width: 480px;
+      margin: 14px 0 24px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    footer {
+      padding: 25px 0;
+      border-top: 1px solid var(--line);
+      color: #88857e;
+      font-size: 11px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    @media (max-width: 700px) {
+      .container { width: min(100% - 28px, 1180px); }
+      .links { display: none; }
+      .hero { min-height: 680px; background-position: 58% center; }
+      .hero-content { padding-top: 60px; }
+      .hero-bottom { font-size: 8px; letter-spacing: .1em; }
+      .section { padding: 64px 0; }
+      .section-heading { align-items: start; flex-direction: column; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .feature { min-height: 170px; }
+      .feature h3 { margin-top: 25px; }
+      .cta { padding: 32px 22px; }
+      .cta::after { font-size: 120px; }
+      .footer-inner { flex-direction: column; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <div class="container nav">
+      <a class="logo" href="#">
+        <span class="logo-mark">✦</span>
+        <span>COUNTER-STRIKE<br>COMMUNITY</span>
+      </a>
+
+      <nav class="links" aria-label="Главное меню">
+        <a href="#about">Об игре</a>
+        <a href="#features">Особенности</a>
+        <a href="#play">Начать играть</a>
+      </nav>
+
+      <a class="steam-small" href="https://store.steampowered.com/app/730/CounterStrike_2/"
+         target="_blank" rel="noopener noreferrer">Открыть в Steam ↗</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="about">
+      <div class="container">
+        <div class="hero-content">
+          <div class="eyebrow">Тактика. Точность. Команда.</div>
+          <h1>Игра<br><span>изменилась.</span></h1>
+          <p class="hero-copy">
+            Counter-Strike 2 — соревновательный шутер, где каждый раунд имеет значение.
+            Собери команду, продумай тактику и выходи на сервер.
+          </p>
+
+          <div class="actions">
+            <a class="button button-primary"
+               href="https://store.steampowered.com/app/730/CounterStrike_2/"
+               target="_blank" rel="noopener noreferrer">
+              ▶ Играть через Steam
+            </a>
+            <a class="button button-outline" href="#features">Узнать больше ↓</a>
+          </div>
+
+          <div class="hero-note">
+            Игра распространяется через <a href="https://store.steampowered.com/app/730/CounterStrike_2/"
+            target="_blank" rel="noopener noreferrer">официальный Steam</a>. Сторонний лаунчер не требуется.
+          </div>
+        </div>
+      </div>
+
+      <div class="container hero-bottom">
+        <span><strong>01</strong> — Тактика решает</span>
+        <span>Counter-Strike 2 · Официальная страница игры</span>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <div class="section-kicker">Добро пожаловать на сервер</div>
+            <h2>Каждый раунд — новая история</h2>
+          </div>
+          <p>Сайт — фанатская промостраница. Для установки и игры используйте Steam и проверяйте системные требования.</p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature">
+            <div class="feature-number">01 / ТАКТИКА</div>
+            <h3>Продумай каждый шаг</h3>
+            <p>Работайте вместе, выбирайте позиции и меняйте план по ходу раунда.</p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-number">02 / ТОЧНОСТЬ</div>
+            <h3>Решает мастерство</h3>
+            <p>Тренируй прицеливание, изучай карты и находи свой стиль игры.</p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-number">03 / КОМАНДА</div>
+            <h3>Играй сообща</h3>
+            <p>Общение и слаженные действия помогают команде добиваться цели.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="container" id="play" style="padding-bottom: 88px">
+      <div class="cta">
+        <div class="cta-inner">
+          <div class="section-kicker">Готов к матчу?</div>
+          <h2>Установи игру официально</h2>
+          <p>
+            Кнопка откроет страницу Counter-Strike 2 в Steam.
+            Войди в аккаунт, установи игру и запускай её из своей библиотеки.
+          </p>
+          <a class="button button-primary"
+             href="https://store.steampowered.com/app/730/CounterStrike_2/"
+             target="_blank" rel="noopener noreferrer">
+            Перейти на страницу CS2 в Steam ↗
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>Фанатская страница · Не является официальным сайтом Valve</span>
+      <span>Counter-Strike и связанные материалы принадлежат их правообладателям.</span>
+    </div>
+  </footer>
+</body>
+</html>
